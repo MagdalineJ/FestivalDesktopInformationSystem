@@ -155,14 +155,14 @@ namespace FestivalDesktopInformationSystem.Services
             return _repository.SearchPeople(keyword.Trim());
         }
 
-        public List<Person> SortPeople(string sortField)
+        public List<Person> filterPeople(string filterField)
         {
             var validFields = new List<string> { "personid", "name", "email", "role" };
 
-            if (!validFields.Contains(sortField.ToLower()))
-                throw new ArgumentException("Invalid sort field.");
+            if (!validFields.Contains(filterField.ToLower()))
+                throw new ArgumentException("Invalid filter field.");
 
-            return _repository.SortPeople(sortField);
+            return _repository.filterPeople(filterField);
         }
 
         public string EditPerson(Person updatedPerson)

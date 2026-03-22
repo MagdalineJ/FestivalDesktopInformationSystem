@@ -19,7 +19,7 @@ namespace FestivalDesktopInformationSystem.Views
             Console.WriteLine("2. View all records");
             Console.WriteLine("3. View records by role");
             Console.WriteLine("4. Search people");
-            Console.WriteLine("5. Sort people");
+            Console.WriteLine("5. Filter people");
             Console.WriteLine("6. Edit person");
             Console.WriteLine("7. Delete person");
             Console.WriteLine("8. Soft delete person");

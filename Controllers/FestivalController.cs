@@ -56,7 +56,7 @@ namespace FestivalDesktopInformationSystem.Controllers
                     SearchPeople();
                     return true;
                 case 5:
-                    SortPeople();
+                    filterPeople();
                     return true;
                 case 6:
                     EditPerson();
@@ -185,19 +185,19 @@ namespace FestivalDesktopInformationSystem.Controllers
             _view.DisplayPeople(results, GetGenreMap(), GetCategoryMap());
         }
 
-        private void SortPeople()
+        private void filterPeople()
         {
-            string sortField = _view.GetInput("Sort by (personId/name/email/role): ").ToLower();
+            string filterField = _view.GetInput("Filter by (personId/name/email/role): ").ToLower();
 
             List<string> validFields = new List<string> { "personid", "name", "email", "role" };
 
-            if (!validFields.Contains(sortField))
+            if (!validFields.Contains(filterField))
             {
-                _view.ShowError("Invalid sort option. Please choose personId, name, email or role.");
+                _view.ShowError("Invalid filter option. Please choose personId, name, email or role.");
                 return;
             }
 
-            var results = _service.SortPeople(sortField);
+            var results = _service.filterPeople(filterField);
             _view.DisplayPeople(results, GetGenreMap(), GetCategoryMap());
         }
 

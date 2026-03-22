@@ -352,13 +352,13 @@ namespace FestivalDesktopInformationSystem.Repositories
             return people;
         }
 
-        // Sorts people by a supported field.
-        // To keep SQL safe, only a fixed list of sort fields is allowed.
-        public List<Person> SortPeople(string sortField)
+        // filters people by a supported field.
+        // To keep SQL safe, only a fixed list of filter fields is allowed.
+        public List<Person> filterPeople(string filterField)
         {
             var people = new List<Person>();
 
-            string orderBy = sortField.ToLower() switch
+            string orderBy = filterField.ToLower() switch
             {
                 "name" => "name",
                 "email" => "email",
