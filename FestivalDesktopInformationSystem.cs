@@ -9,7 +9,7 @@ namespace FestivalDesktopInformationSystem
         public static string User => "root";
         public static string Password => "";
 
-            public const string ConnectionString = 
+        public const string ConnectionString = 
         "Server=localhost;Port=3306;Database=Festival_desktop_information_system;" + "Uid=root;SslMode=Disabled;";
     }
 }
