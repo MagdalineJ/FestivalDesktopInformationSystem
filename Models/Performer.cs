@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FestivalDesktopInformationSystem.Models
 {
-    // Performer inherits from Person and adds fee and genre IDs.
+    // Performer inherits from Person and adds fee and genre IDs to performe update and removal.
     public class Performer : Person
     {
         private decimal _fee;

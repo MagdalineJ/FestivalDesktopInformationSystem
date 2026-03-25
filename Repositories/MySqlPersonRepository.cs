@@ -255,7 +255,7 @@ namespace FestivalDesktopInformationSystem.Repositories
             return people;
         }
 
-        // Returns people filtered by a specific role.
+        // Returns people Filtered by a specific role.
         public List<Person> GetPeopleByRole(string role)
         {
             var people = new List<Person>();
@@ -352,13 +352,13 @@ namespace FestivalDesktopInformationSystem.Repositories
             return people;
         }
 
-        // filters people by a supported field.
-        // To keep SQL safe, only a fixed list of filter fields is allowed.
-        public List<Person> filterPeople(string filterField)
+        // Filters people by a supported field.
+        // To keep SQL safe, only a fixed list of Filter fields is allowed.
+        public List<Person> FilterPeople(string FilterField)
         {
             var people = new List<Person>();
 
-            string orderBy = filterField.ToLower() switch
+            string orderBy = FilterField.ToLower() switch
             {
                 "name" => "name",
                 "email" => "email",
@@ -770,6 +770,7 @@ namespace FestivalDesktopInformationSystem.Repositories
             }
         }
 
+        //gets all genres from database
         public List<Genre> GetAllGenres()
         {
             var genres = new List<Genre>();
@@ -798,6 +799,7 @@ namespace FestivalDesktopInformationSystem.Repositories
             return genres;
         }
 
+        //gets all categories from database
         public List<Category> GetAllCategories()
         {
             var categories = new List<Category>();

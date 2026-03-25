@@ -9,7 +9,8 @@ namespace FestivalDesktopInformationSystem.Services
     // Generates text-based reports from the current list of people.
     // These reports can be displayed in the console view.
     public class ReportService
-    {
+    {   
+        //counts people by role
         public string GeneratePeopleCountByRole(List<Person> people)
         {
             if (people == null || people.Count == 0)
@@ -28,6 +29,7 @@ namespace FestivalDesktopInformationSystem.Services
             return report.ToString();
         }
 
+        //calculates performer fee statistics
         public string GeneratePerformerFeeReport(List<Person> people, List<Genre> genres)
         {
             if (people == null || people.Count == 0)
@@ -65,6 +67,7 @@ namespace FestivalDesktopInformationSystem.Services
             return report.ToString();
         }
 
+        //calculates total crew cost
         public string GenerateCrewCostReport(List<Person> people)
         {
             if (people == null || people.Count == 0)
@@ -93,6 +96,7 @@ namespace FestivalDesktopInformationSystem.Services
             return report.ToString();
         }
 
+        // provides summary of vendor categories
         public string GenerateVendorCategoryReport(List<Person> people, List<Category> categories)
         {
             if (people == null || people.Count == 0)

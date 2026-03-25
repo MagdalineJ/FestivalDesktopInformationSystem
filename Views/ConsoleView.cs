@@ -9,6 +9,7 @@ namespace FestivalDesktopInformationSystem.Views
     // This class is responsible only for input and output.
     public class ConsoleView : IFestivalView
     {
+        //displays main menu options 
         public void DisplayMenu()
         {
             Console.WriteLine();
@@ -30,22 +31,26 @@ namespace FestivalDesktopInformationSystem.Views
             Console.WriteLine("========================================");
         }
 
+        //shows messages to the user 
         public void ShowMessage(string message)
         {
             Console.WriteLine(message);
         }
 
+        //displays error messages
         public void ShowError(string message)
         {
             Console.WriteLine($"Error: {message}");
         }
 
+        //gets string input from user
         public string GetInput(string prompt)
         {
             Console.Write(prompt);
             return Console.ReadLine()?.Trim() ?? string.Empty;
         }
 
+        //gets integer input from user
         public int GetIntInput(string prompt)
         {
             while (true)
@@ -60,6 +65,7 @@ namespace FestivalDesktopInformationSystem.Views
             }
         }
 
+        //gets decimal input from users
         public decimal GetDecimalInput(string prompt)
         {
             while (true)
@@ -74,6 +80,7 @@ namespace FestivalDesktopInformationSystem.Views
             }
         }
 
+        //gets yes or no confirmation from user
         public bool GetConfirmation(string prompt)
         {
             Console.Write($"{prompt} (Y/N): ");
@@ -81,6 +88,7 @@ namespace FestivalDesktopInformationSystem.Views
             return response == "Y" || response == "YES";
         }
 
+        //displayes list of people with formatted role specific details 
         public void DisplayPeople(
             List<Person> people,
             Dictionary<int, string> genreMap,
@@ -113,7 +121,8 @@ namespace FestivalDesktopInformationSystem.Views
                         $"Role: {performer.GetRole()} | " +
                         $"Deleted: {performer.GetIsDeleted()} | " +
                         $"Fee: {performer.GetFee():C} | " +
-                        $"Genres: {string.Join(", ", genreNames)}"
+                        $"Genres: {string.Join(", ", genreNames)}"+
+                        $"\n"
                     );
                 }
                 else if (person is Crew crew)
@@ -128,7 +137,8 @@ namespace FestivalDesktopInformationSystem.Views
                         $"Hourly Rate: {crew.GetHourlyRate():C} | " +
                         $"Employment Type: {crew.GetEmploymentType()} | " +
                         $"Weekly Hours: {crew.GetWeeklyHours()} | " +
-                        $"Weekly Pay: {crew.CalculateWeeklyPay():C}"
+                        $"Weekly Pay: {crew.CalculateWeeklyPay():C}"+
+                        $"\n"
                     );
                 }
                 else if (person is Vendor vendor)
@@ -146,7 +156,9 @@ namespace FestivalDesktopInformationSystem.Views
                         $"Role: {vendor.GetRole()} | " +
                         $"Deleted: {vendor.GetIsDeleted()} | " +
                         $"Stall Name: {vendor.GetStallName()} | " +
-                        $"Categories: {string.Join(", ", categoryNames)}"
+                        $"Categories: {string.Join(", ", categoryNames)}"+
+                        $"\n"
+                    
                     );
                 }
                 else
@@ -158,12 +170,14 @@ namespace FestivalDesktopInformationSystem.Views
             Console.WriteLine("=====================================");
         }
 
+        //displays generated report
         public void DisplayReport(string report)
         {
             Console.WriteLine();
             Console.WriteLine(report);
         }
 
+        //displays avaialable genres
         public void DisplayGenres(List<Genre> genres)
         {
             Console.WriteLine();
@@ -175,6 +189,7 @@ namespace FestivalDesktopInformationSystem.Views
             }
         }
 
+        //displays generated categories
         public void DisplayCategories(List<Category> categories)
         {
             Console.WriteLine();

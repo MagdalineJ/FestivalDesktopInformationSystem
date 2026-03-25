@@ -27,7 +27,8 @@ namespace FestivalDesktopInformationSystem.Services
             _csvExporter = csvExporter;
             _reportService = reportService;
         }
-
+        
+        //addperformer, addvendor and addcrew validates and adds any records for the responsible role
         public string AddPerformer(
             string name,
             string telephone,
@@ -136,11 +137,13 @@ namespace FestivalDesktopInformationSystem.Services
 
         public List<Person> GetAllPeople()
         {
+            //retrives all records 
             return _repository.GetAllPeople();
         }
 
         public List<Person> GetPeopleByRole(string role)
-        {
+        {   
+            //retrives people filetred by role
             if (string.IsNullOrWhiteSpace(role))
                 return new List<Person>();
 
@@ -149,24 +152,27 @@ namespace FestivalDesktopInformationSystem.Services
 
         public List<Person> SearchPeople(string keyword)
         {
+            //allows search for records with matching string or integer input
             if (string.IsNullOrWhiteSpace(keyword))
                 return new List<Person>();
 
             return _repository.SearchPeople(keyword.Trim());
         }
 
-        public List<Person> filterPeople(string filterField)
+        public List<Person> FilterPeople(string FilterField)
         {
+            //sorts records intro selected criteria
             var validFields = new List<string> { "personid", "name", "email", "role" };
 
-            if (!validFields.Contains(filterField.ToLower()))
-                throw new ArgumentException("Invalid filter field.");
+            if (!validFields.Contains(FilterField.ToLower()))
+                throw new ArgumentException("Invalid Filter field.");
 
-            return _repository.filterPeople(filterField);
+            return _repository.FilterPeople(FilterField);
         }
 
         public string EditPerson(Person updatedPerson)
         {
+            //Validates and updates an existign record
             if (updatedPerson == null)
                 return "Error: Updated person data is missing.";
 
@@ -231,24 +237,28 @@ namespace FestivalDesktopInformationSystem.Services
 
         public string DeletePerson(int personId)
         {
+            //permanently removes a person
             bool deleted = _repository.DeletePerson(personId);
             return deleted ? "Person deleted successfully." : "Person not found.";
         }
 
         public string SoftDeletePerson(int personId)
-        {
+        {   
+            //temporarily hides a person
             bool deleted = _repository.SoftDeletePerson(personId);
             return deleted ? "Person soft-deleted successfully." : "Person not found.";
         }
 
         public string RestorePerson(int personId)
         {
+            //restores temoporarily hidden person
             bool restored = _repository.RestorePerson(personId);
             return restored ? "Person restored successfully." : "Person not found.";
         }
 
         public void ExportPeopleToCsv(string filePath)
         {
+            // ExportPeopleToCsv() - Exports records to CSV file
             var people = _repository.GetAllPeople();
 
             var genreMap = _repository.GetAllGenres()
@@ -262,12 +272,14 @@ namespace FestivalDesktopInformationSystem.Services
 
         public string GenerateRoleReport()
         {
+            // GenerateRoleReport() - Generates report showing count by role
             var people = _repository.GetAllPeople();
             return _reportService.GeneratePeopleCountByRole(people);
         }
 
         public string GenerateCostReport()
         {
+            // GenerateCostReport() - Generates cost and category reports
             var people = _repository.GetAllPeople();
             var genres = _repository.GetAllGenres();
             var categories = _repository.GetAllCategories();
@@ -283,6 +295,7 @@ namespace FestivalDesktopInformationSystem.Services
                    + vendorCategoryReport;
         }
 
+        //getAllGenres , getAllCategories and GetPersonbyID retrieves data from database
         public List<Genre> GetAllGenres()
         {
             return _repository.GetAllGenres();

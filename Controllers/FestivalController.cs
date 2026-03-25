@@ -22,6 +22,7 @@ namespace FestivalDesktopInformationSystem.Controllers
 
         public void Start()
         {
+            // Start() - Runs the main application loop
             bool running = true;
 
             while (running)
@@ -41,6 +42,7 @@ namespace FestivalDesktopInformationSystem.Controllers
 
         private bool HandleMenuChoice(int choice)
         {
+            // HandleMenuChoice() - Processes menu selection and triggers corresponding actions
             switch (choice)
             {
                 case 1:
@@ -56,7 +58,7 @@ namespace FestivalDesktopInformationSystem.Controllers
                     SearchPeople();
                     return true;
                 case 5:
-                    filterPeople();
+                    FilterPeople();
                     return true;
                 case 6:
                     EditPerson();
@@ -87,6 +89,7 @@ namespace FestivalDesktopInformationSystem.Controllers
 
         private void AddPerson()
         {
+            // AddPerson() - Displays role options and routes to specific add methods
             _view.ShowMessage("\nAdd New Record");
             _view.ShowMessage("1. Performer");
             _view.ShowMessage("2. Crew");
@@ -113,6 +116,7 @@ namespace FestivalDesktopInformationSystem.Controllers
 
         private void AddPerformer()
         {
+            // AddPerformer() - Collects performer input and sends data to service
             string name = _view.GetInput("Name: ");
             string telephone = _view.GetInput("Telephone: ");
             string email = _view.GetInput("Email: ");
@@ -130,6 +134,7 @@ namespace FestivalDesktopInformationSystem.Controllers
 
         private void AddCrew()
         {
+            // AddCrew - Collects crew input and sends data to service
             string name = _view.GetInput("Name: ");
             string telephone = _view.GetInput("Telephone: ");
             string email = _view.GetInput("Email: ");
@@ -149,7 +154,8 @@ namespace FestivalDesktopInformationSystem.Controllers
         }
 
         private void AddVendor()
-        {
+        {   
+            // AddVendor() - Collects vendor input and sends data to service
             string name = _view.GetInput("Contact Name: ");
             string telephone = _view.GetInput("Telephone: ");
             string email = _view.GetInput("Email: ");
@@ -166,43 +172,48 @@ namespace FestivalDesktopInformationSystem.Controllers
         }
 
         private void ViewAllPeople()
-        {
+        {   
+            // ViewAllPeople() - Retrieves and displays all records
             var people = _service.GetAllPeople();
             _view.DisplayPeople(people, GetGenreMap(), GetCategoryMap());
         }
 
         private void ViewPeopleByRole()
         {
+            // ViewPeopleByRole - Displays records Filtered by role
             string role = _view.GetInput("Enter role (Performer/Crew/Vendor): ");
             var people = _service.GetPeopleByRole(role);
             _view.DisplayPeople(people, GetGenreMap(), GetCategoryMap());
         }
 
         private void SearchPeople()
-        {
+        {   
+            // SearchPeople - Searches records based on keyword input
             string keyword = _view.GetInput("Enter name, email, phone or role keyword: ");
             var results = _service.SearchPeople(keyword);
             _view.DisplayPeople(results, GetGenreMap(), GetCategoryMap());
         }
 
-        private void filterPeople()
-        {
-            string filterField = _view.GetInput("Filter by (personId/name/email/role): ").ToLower();
+        private void FilterPeople()
+        {   
+            // FilterPeople - Filters records based on selected field
+            string FilterField = _view.GetInput("Filter by (personId/name/email/role): ").ToLower();
 
             List<string> validFields = new List<string> { "personid", "name", "email", "role" };
 
-            if (!validFields.Contains(filterField))
+            if (!validFields.Contains(FilterField))
             {
-                _view.ShowError("Invalid filter option. Please choose personId, name, email or role.");
+                _view.ShowError("Invalid Filter option. Please choose personId, name, email or role.");
                 return;
             }
 
-            var results = _service.filterPeople(filterField);
+            var results = _service.FilterPeople(FilterField);
             _view.DisplayPeople(results, GetGenreMap(), GetCategoryMap());
         }
 
         private void EditPerson()
-        {
+        {   
+            // EditPerson - Updates an existing person’s details
             int personId = _view.GetIntInput("Enter Person ID to edit: ");
             Person? existingPerson = _service.GetPersonById(personId);
 
@@ -264,7 +275,8 @@ namespace FestivalDesktopInformationSystem.Controllers
         }
 
         private void DeletePerson()
-        {
+        {   
+            // DeletePerson() - Permanently deletes a person record
             int personId = _view.GetIntInput("Enter Person ID to delete permanently: ");
             bool confirmed = _view.GetConfirmation("Are you sure you want to permanently delete this record?");
 
@@ -279,7 +291,8 @@ namespace FestivalDesktopInformationSystem.Controllers
         }
 
         private void SoftDeletePerson()
-        {
+        {   
+            // SoftDeletePerson() - Marks a person as deleted without removing data
             int personId = _view.GetIntInput("Enter Person ID to soft delete: ");
             bool confirmed = _view.GetConfirmation("Are you sure you want to soft delete this record?");
 
@@ -294,14 +307,16 @@ namespace FestivalDesktopInformationSystem.Controllers
         }
 
         private void RestorePerson()
-        {
+        {   
+            // RestorePerson - Restores a soft-deleted record
             int personId = _view.GetIntInput("Enter Person ID to restore: ");
             string result = _service.RestorePerson(personId);
             _view.ShowMessage(result);
         }
 
         private void ExportToCsv()
-        {
+        {   
+            // ExportToCsv - Exports all records to a CSV file
             string filePath = _view.GetInput("Enter CSV file path (example: festival_people.csv): ");
 
             try
@@ -316,7 +331,8 @@ namespace FestivalDesktopInformationSystem.Controllers
         }
 
         private void GenerateReports()
-        {
+        {   
+            // GenerateReports() - Displays available reports and executes selected report
             _view.ShowMessage("\nReports");
             _view.ShowMessage("1. Role report");
             _view.ShowMessage("2. Cost report");
@@ -338,7 +354,8 @@ namespace FestivalDesktopInformationSystem.Controllers
         }
 
         private List<int> ParseIdList(string input)
-        {
+        {   
+            // ParseIdList() - Converts comma-separated input into a list of integers
             if (string.IsNullOrWhiteSpace(input))
                 return new List<int>();
 
@@ -352,13 +369,15 @@ namespace FestivalDesktopInformationSystem.Controllers
         }
 
         private Dictionary<int, string> GetGenreMap()
-        {
+        {   
+            // GetGenreMap() - Builds a dictionary of genre IDs to names
             return _service.GetAllGenres()
                 .ToDictionary(g => g.GenreId, g => g.GenreName);
         }
 
         private Dictionary<int, string> GetCategoryMap()
         {
+            // GetCategoryMap() - Builds a dictionary of category IDs to names
             return _service.GetAllCategories()
                 .ToDictionary(c => c.CategoryId, c => c.CategoryName);
         }

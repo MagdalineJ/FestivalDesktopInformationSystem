@@ -10,6 +10,7 @@ namespace FestivalDesktopInformationSystem.Helpers
     // Exports person data into a CSV file.
     public class CsvExporter
     {
+        // ExportPeople() - Writes person data to CSV file
         public void ExportPeople(
             string filePath,
             List<Person> people,
@@ -78,6 +79,7 @@ namespace FestivalDesktopInformationSystem.Helpers
             File.WriteAllLines(filePath, lines, Encoding.UTF8);
         }
 
+        // EscapeCsv - Escapes special characters for CSV formatting
         private string EscapeCsv(string value)
         {
             if (value == null)

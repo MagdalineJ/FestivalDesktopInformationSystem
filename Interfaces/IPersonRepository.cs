@@ -18,7 +18,7 @@ namespace FestivalDesktopInformationSystem.Interfaces
         Person? GetPersonById(int personId);
 
         List<Person> SearchPeople(string keyword);
-        List<Person> filterPeople(string filterField);
+        List<Person> FilterPeople(string FilterField);
 
         bool EmailExists(string email);
 
