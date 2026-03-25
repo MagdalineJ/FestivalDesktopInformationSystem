@@ -192,7 +192,7 @@ namespace FestivalDesktopInformationSystem.Repositories
             {
                 OpenConnection();
 
-                string sql = "UPDATE people SET isDeleted = 1 WHERE personId = @personId;";
+                string sql = "UPDATE people SET isDeleted = 1 WHERE personId = @personId AND isDeleted = 0;";
                 using var cmd = new MySqlCommand(sql, _connection);
                 cmd.Parameters.AddWithValue("@personId", personId);
 
@@ -212,7 +212,7 @@ namespace FestivalDesktopInformationSystem.Repositories
             {
                 OpenConnection();
 
-                string sql = "UPDATE people SET isDeleted = 0 WHERE personId = @personId;";
+                string sql = "UPDATE people SET isDeleted = 0 WHERE personId = @personId AND isDeleted = 1;";
                 using var cmd = new MySqlCommand(sql, _connection);
                 cmd.Parameters.AddWithValue("@personId", personId);
 
@@ -225,7 +225,7 @@ namespace FestivalDesktopInformationSystem.Repositories
             }
         }
 
-        // Returns every person in the system with role-specific data loaded.
+        // Returns every active person in the system with role-specific data loaded.
         public List<Person> GetAllPeople()
         {
             var people = new List<Person>();
@@ -237,6 +237,7 @@ namespace FestivalDesktopInformationSystem.Repositories
                 string sql = @"
                     SELECT personId, name, telephone, email, role, isDeleted
                     FROM people
+                    WHERE isDeleted = 0
                     ORDER BY personId;";
 
                 using var cmd = new MySqlCommand(sql, _connection);
@@ -255,7 +256,7 @@ namespace FestivalDesktopInformationSystem.Repositories
             return people;
         }
 
-        // Returns people Filtered by a specific role.
+        // Returns active people filtered by a specific role.
         public List<Person> GetPeopleByRole(string role)
         {
             var people = new List<Person>();
@@ -268,6 +269,7 @@ namespace FestivalDesktopInformationSystem.Repositories
                     SELECT personId, name, telephone, email, role, isDeleted
                     FROM people
                     WHERE role = @role
+                      AND isDeleted = 0
                     ORDER BY name;";
 
                 using var cmd = new MySqlCommand(sql, _connection);
@@ -288,7 +290,7 @@ namespace FestivalDesktopInformationSystem.Repositories
             return people;
         }
 
-        // Returns a single person by ID, or null if not found.
+        // Returns a single active person by ID, or null if not found.
         public Person? GetPersonById(int personId)
         {
             try
@@ -298,7 +300,8 @@ namespace FestivalDesktopInformationSystem.Repositories
                 string sql = @"
                     SELECT personId, name, telephone, email, role, isDeleted
                     FROM people
-                    WHERE personId = @personId;";
+                    WHERE personId = @personId
+                      AND isDeleted = 0;";
 
                 using var cmd = new MySqlCommand(sql, _connection);
                 cmd.Parameters.AddWithValue("@personId", personId);
@@ -328,10 +331,13 @@ namespace FestivalDesktopInformationSystem.Repositories
                 string sql = @"
                     SELECT personId, name, telephone, email, role, isDeleted
                     FROM people
-                    WHERE name LIKE @keyword
-                       OR email LIKE @keyword
-                       OR telephone LIKE @keyword
-                       OR role LIKE @keyword
+                    WHERE isDeleted = 0
+                      AND (
+                            name LIKE @keyword
+                         OR email LIKE @keyword
+                         OR telephone LIKE @keyword
+                         OR role LIKE @keyword
+                      )
                     ORDER BY name;";
 
                 using var cmd = new MySqlCommand(sql, _connection);
@@ -353,7 +359,7 @@ namespace FestivalDesktopInformationSystem.Repositories
         }
 
         // Filters people by a supported field.
-        // To keep SQL safe, only a fixed list of Filter fields is allowed.
+        // To keep SQL safe, only a fixed list of filter fields is allowed.
         public List<Person> FilterPeople(string FilterField)
         {
             var people = new List<Person>();
@@ -374,6 +380,7 @@ namespace FestivalDesktopInformationSystem.Repositories
                 string sql = $@"
                     SELECT personId, name, telephone, email, role, isDeleted
                     FROM people
+                    WHERE isDeleted = 0
                     ORDER BY {orderBy};";
 
                 using var cmd = new MySqlCommand(sql, _connection);
@@ -392,14 +399,14 @@ namespace FestivalDesktopInformationSystem.Repositories
             return people;
         }
 
-        // Checks whether an email already exists in the people table.
+        // Checks whether an active email already exists in the people table.
         public bool EmailExists(string email)
         {
             try
             {
                 OpenConnection();
 
-                string sql = "SELECT COUNT(*) FROM people WHERE email = @email;";
+                string sql = "SELECT COUNT(*) FROM people WHERE email = @email AND isDeleted = 0;";
                 using var cmd = new MySqlCommand(sql, _connection);
                 cmd.Parameters.AddWithValue("@email", email);
 
@@ -770,7 +777,7 @@ namespace FestivalDesktopInformationSystem.Repositories
             }
         }
 
-        //gets all genres from database
+        // gets all genres from database
         public List<Genre> GetAllGenres()
         {
             var genres = new List<Genre>();
@@ -799,7 +806,7 @@ namespace FestivalDesktopInformationSystem.Repositories
             return genres;
         }
 
-        //gets all categories from database
+        // gets all categories from database
         public List<Category> GetAllCategories()
         {
             var categories = new List<Category>();
